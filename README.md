@@ -8,7 +8,7 @@ the Testing folder was used for learning pybind11 and the different ways it can 
 make python modules out of C++ code
 
 most of the work is currently being done in the cwaggle_with_pybind directory, 
-pybind11 bindings are being written in cridge.cpp under cwaggle_with_pybind/cwaggle/src/cwaggle_bridge
+pybind11 bindings are being written in bridge.cpp under cwaggle_with_pybind/cwaggle/src/cwaggle_bridge
 the testing code in python is being done in test.py under cwaggle_with_pybind/cwaggle/bin
 some older files used during the learning/testing process were kept and contain outdated tests, code, commands, and tasks.
 the files were kept so that I could more easily look back and remeber what I had already done/tried. 
