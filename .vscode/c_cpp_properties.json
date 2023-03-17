@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/ninja6345/comp4780ProGit/**",
+                "/home/ninja6345/Downloads/Python-3.11.1/Include",
+                "/usr/include/python3.10",
+                "/home/ninja6345/comp4780ProGit/cwaggle_with_pybind/cwaggle/src/utils/**",
+                "/home/ninja6345/comp4780ProGit/cwaggle_with_pybind/cwaggle/src/lasso/**",
+                "/home/ninja6345/comp4780ProGit/cwaggle_with_pybind/cwaggle/src/utils",
+                "/home/ninja6345/comp4780ProGit/cwaggle_with_pybind/cwaggle/src/lasso",
+                "/home/ninja6345/cwaggle_with_pybind",
+                "/home/ninja6345/cwaggle_with_pybind/**",
+                "${workspaceFolder}/cwaggle_with_pybind/cwaggle/src/utils",
+                "/home/ninja6345/comp4780ProGit/cwaggle_with_pybind/cwaggle/include",
+                "/home/ninja6345/comp4780ProGit/Testing",
+                "/home/ninja6345/comp4780ProGit/Testing/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

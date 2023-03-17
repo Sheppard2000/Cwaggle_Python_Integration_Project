@@ -1,0 +1,7 @@
+{
+    "cmake.configureOnOpen": true,
+    "cmake.sourceDirectory": "${workspaceFolder}/pybind11",
+    "files.associations": {
+        "iostream": "cpp"
+    }
+}

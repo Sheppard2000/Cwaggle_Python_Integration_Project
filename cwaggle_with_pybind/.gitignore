@@ -1,0 +1,23 @@
+*.o
+*.pyc
+*.exe
+*.DS_Store
+*.png
+*.pdf
+*.dat
+
+# Latex-related
+*.cls
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+iros21/root.synctex.gz
+iros21/root.blg
+iros21/root.bbl
+kodama_server/.gitignore
+kodama_server/kodama_server
+kodama_server/musv-key
+iros21/IEEEtran.bst
+kodama_server/screenshot.xcf
+cwaggle_bridge.so

@@ -1,0 +1,14 @@
+The goeal is to recreate stricklands experiment using openAI gym in cwaggle.
+
+the environment, state and, reward will be based on stricklands experiment
+
+this means that the observable state for an agent in the environment will consist of
+seven sensors resulting in five different readings.
+
+the action space for each agent will also be the same. Each agent will move forward
+at a constant rate. The only action an agent can take is to rotate. So each agent
+will have an action space of 5, move forward, turn left a little, turn left a lot,
+turn right a little, and turn right a lot.
+
+we will use the same reward function as proposed in stricklands paper.
+
