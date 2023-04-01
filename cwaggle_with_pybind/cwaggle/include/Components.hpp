@@ -51,11 +51,13 @@ public:
 
 //class GridSensor;
 class RobotSensor;
+class ObstacleSensor;
 class CSensorArray
 {
 public:
     //std::vector<std::shared_ptr<GridSensor>>     gridSensors;
     std::vector<std::shared_ptr<RobotSensor>>     robotSensors;
+    std::vector<std::shared_ptr<ObstacleSensor>>  obstacleSensors;
     CSensorArray() {}
 };
 
@@ -88,6 +90,9 @@ public:
     double angularSpeed = 0;
     double speed = 0;
     int slowedCount = 0;
+    // TS: Extra bit added for collisoon avoidance training.
+    // value is used in reward function.
+    int collisionCount = 0;
     bool frozen = false;
     CSteer() {}
 };

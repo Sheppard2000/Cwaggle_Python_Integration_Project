@@ -83,4 +83,16 @@ PYBIND11_MODULE(cwaggle_bridge, m) {
         .def(py::init<>())
         .def("getAction", &EntityController::getAction)
         .def("getLastAction", &EntityController::getLastAction);
+
+    py::class_<World>(m, "EntityController")
+        .def(py::init<double, double>())
+        .def("update", &World::update)
+        .def("addEntity", &World::addEntity)
+        .def("addGrid", &World::addGrid)
+        .def("getEntities", py::overload_cast<>(&World::getEntities))
+        .def("getEntities", py::overload_cast<const std::string &>(&World::getEntities))
+        .def("getGrid", &World::getGrid)
+        .def("getNumberOfGrids", &World::getNumberOfGrids)
+        .def("width", &World::width)
+        .def("height", &World::height);
 }

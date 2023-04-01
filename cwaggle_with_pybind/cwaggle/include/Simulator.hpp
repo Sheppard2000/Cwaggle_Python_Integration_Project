@@ -124,6 +124,8 @@ class Simulator
                     // If this circlebody belongs to a robot, then slow it
                     auto & steer1 = e1.getComponent<CSteer>();
                     steer1.slowedCount = SLOWED_ROBOT_COUNT;
+                    // TS: extra bit added for collision avoidance training.
+                    steer1.collisionCount += 1;
                 }
             }
 
@@ -201,6 +203,18 @@ class Simulator
                     t2.p -= delta2;
                     b1.collided = true;
                     b2.collided = true;
+                    
+                    // TS: If one or the other of the circles are robots, increment the collision counter,
+                    // used in collision avoidance training
+                    if (e1.hasComponent<CSteer>())
+                    {
+                        e1.getComponent<CSteer>().collisionCount++;
+                    }
+
+                    if (e2.hasComponent<CSteer>())
+                    {
+                        e2.getComponent<CSteer>().collisionCount++;
+                    }
 
                     // If both circlebodys belongs to robots, then slow both of them
                     if (e1.hasComponent<CPlowBody>() && e2.hasComponent<CPlowBody>()) {
@@ -218,10 +232,45 @@ class Simulator
             //if (c1.p.y >= m_world->height()) { c1.p.y -= m_world->height(); }
             
             // check for collisions with the bounds of the world
-            if (t1.p.x - b1.r < 0) { t1.p.x = b1.r; b1.collided = true; }
-            if (t1.p.y - b1.r < 0) { t1.p.y = b1.r; b1.collided = true; }
-            if (t1.p.x + b1.r > m_world->width()) { t1.p.x = m_world->width() - b1.r;  b1.collided = true; }
-            if (t1.p.y + b1.r > m_world->height()) { t1.p.y = m_world->height() - b1.r; b1.collided = true; }
+            if (t1.p.x - b1.r < 0) 
+            { 
+                t1.p.x = b1.r; 
+                b1.collided = true;
+                // TS: extra bit to count collisions with the bounds of the world
+                if (e1.hasComponent<CSteer>())
+                {
+                    e1.getComponent<CSteer>().collisionCount++;
+                }
+            }
+            if (t1.p.y - b1.r < 0) 
+            { 
+                t1.p.y = b1.r; 
+                b1.collided = true;
+                if (e1.hasComponent<CSteer>())
+                {
+                    e1.getComponent<CSteer>().collisionCount++;
+                }
+            }
+            if (t1.p.x + b1.r > m_world->width()) 
+            { 
+                t1.p.x = m_world->width() - b1.r;  
+                b1.collided = true; 
+                // TS: extra bit to count collisions with the bounds of the world
+                if (e1.hasComponent<CSteer>())
+                {
+                    e1.getComponent<CSteer>().collisionCount++;
+                }
+            }
+            if (t1.p.y + b1.r > m_world->height()) 
+            { 
+                t1.p.y = m_world->height() - b1.r; 
+                b1.collided = true;
+                // TS: extra bit to count collisions with the bounds of the world
+                if (e1.hasComponent<CSteer>())
+                {
+                    e1.getComponent<CSteer>().collisionCount++;
+                }
+            }
 
             // AV: check for collisions between plows and bounds of the world.
             /*

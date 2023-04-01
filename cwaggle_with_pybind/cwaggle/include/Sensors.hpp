@@ -109,3 +109,127 @@ public:
         return m_radius;
     }
 };
+
+class PuckSensor : public Sensor
+{
+    double m_radius;
+
+public:
+
+    PuckSensor(size_t ownerID, string name, double angle, double distance, double radius)
+        : Sensor(ownerID, name, angle, distance)
+    {
+        m_radius = radius;
+    }
+
+    inline double getReading(std::shared_ptr<World> world)
+    {
+        double sum = 0;
+        Vec2 pos = getPosition();
+        for (auto puck : world->getEntities("puck"))
+        {
+            auto & t = puck.getComponent<CTransform>();
+            auto & b = puck.getComponent<CCircleBody>();
+
+            // collision with a puck
+            if (t.p.distSq(pos) < (m_radius + b.r)*(m_radius + b.r))
+            {
+                sum += 1.0;
+            }
+        }
+        return sum;
+    }
+
+    inline double radius() const
+    {
+        return m_radius;
+    }
+
+};
+
+class ObstacleSensor : public Sensor
+{
+    double m_radius;
+
+public:
+
+    ObstacleSensor(size_t ownerID, string name, double angle, double distance, double radius)
+        : Sensor(ownerID, name, angle, distance)
+    {
+        m_radius = radius;
+    }
+
+    inline double getReading(std::shared_ptr<World> world)
+    {
+        double sum = 0;
+        Vec2 pos = getPosition();
+        for (auto e : world->getEntities())
+        {
+            if (!e.hasComponent<CCircleBody>()) { continue; }
+            if (m_ownerID == e.id()) { continue; }
+
+            auto & t = e.getComponent<CTransform>();
+            auto & b = e.getComponent<CCircleBody>();
+
+            // collision with a puck
+            if (t.p.distSq(pos) < (m_radius + b.r)*(m_radius + b.r))
+            {
+                sum += 1.0;
+            }
+        }
+        // added in wall/world boundings detection
+        if (pos.x - m_radius <= 0 || pos.x + m_radius >= world->width() || pos.y - m_radius <= 0 || pos.y >= world->height())
+        {
+            sum += 1.0;
+        }
+        return sum;
+    }
+
+    inline double radius() const
+    {
+        return m_radius;
+    }
+};
+
+/*
+// check for collisions with the bounds of the world
+            if (t1.p.x - b1.r < 0) 
+            { 
+                t1.p.x = b1.r; 
+                b1.collided = true;
+                // TS: extra bit to count collisions with the bounds of the world
+                if (e1.hasComponent<CSteer>())
+                {
+                    e1.getComponent<CSteer>().collisionCount++;
+                }
+            }
+            if (t1.p.y - b1.r < 0) 
+            { 
+                t1.p.y = b1.r; 
+                b1.collided = true;
+                if (e1.hasComponent<CSteer>())
+                {
+                    e1.getComponent<CSteer>().collisionCount++;
+                }
+            }
+            if (t1.p.x + b1.r > m_world->width()) 
+            { 
+                t1.p.x = m_world->width() - b1.r;  
+                b1.collided = true; 
+                // TS: extra bit to count collisions with the bounds of the world
+                if (e1.hasComponent<CSteer>())
+                {
+                    e1.getComponent<CSteer>().collisionCount++;
+                }
+            }
+            if (t1.p.y + b1.r > m_world->height()) 
+            { 
+                t1.p.y = m_world->height() - b1.r; 
+                b1.collided = true;
+                // TS: extra bit to count collisions with the bounds of the world
+                if (e1.hasComponent<CSteer>())
+                {
+                    e1.getComponent<CSteer>().collisionCount++;
+                }
+            }
+*/

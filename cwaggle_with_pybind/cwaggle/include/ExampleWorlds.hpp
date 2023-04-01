@@ -115,7 +115,7 @@ namespace ExampleWorlds
             puck.addComponent<CColor>(200, 44, 44, 255);
         }
         
-        // world->addGrid(ExampleGrids::GetInverseCenterDistanceGrid(64, 64));
+        //world->addGrid(ExampleGrids::GetInverseCenterDistanceGrid(64, 64));
         world->addGrid(ExampleGrids::GetInverseCenterDistanceGrid(width, height));
 
         world->update();

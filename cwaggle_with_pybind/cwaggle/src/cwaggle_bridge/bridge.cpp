@@ -6,8 +6,8 @@
 #include <chrono>
 
 #include "CWaggle.h"
-#include "ExampleGrids.hpp"
-#include "ExampleWorlds.hpp"
+//#include "ExampleGrids.hpp"
+//#include "ExampleWorlds.hpp"
 #include "../lasso/MyExperiment.hpp"
 #include "../lasso/Config.hpp"
 #include "../lasso/LassoController.hpp"
@@ -43,6 +43,16 @@ void runSimulation() {
     }
 
     cout << "\t" << avgEval / config.numTrials << "\n";
+}
+
+void someControlFunction() 
+{
+    //if the control which we need to be passed along is done in a function,
+    //I would assume that the function would go here. or maybe it is a specific
+    //attribute set that needs to be made available, in which case def_readwrite 
+    //may end up being used, or it might be some combination. come back to this 
+    //idea later on after getting a better idea of how to hand off control to the
+    //python side through pybind.
 }
 
 PYBIND11_MODULE(cwaggle_bridge, m) {
