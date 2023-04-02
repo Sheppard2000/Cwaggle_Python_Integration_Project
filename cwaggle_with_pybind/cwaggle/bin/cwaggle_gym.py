@@ -7,8 +7,8 @@ import control_bridge as cb
 import numpy as np
 import gym
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten
-from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.optimizers.legacy import Adam
 from rl.agents import DQNAgent
 from rl.policy import BoltzmannQPolicy
 from rl.memory import SequentialMemory
@@ -29,9 +29,11 @@ class cwaggle_gym(gym.Env):
         # side these actions will be reperesented as 0, 1, 2, 3, 4, 
         # respectivly
         self.action_space = gym.spaces.Discrete(5)
-        self.observation_space = gym.spaces.Discrete(8)
+        self.observation_space = gym.spaces.Box(low=np.array([0]), high=np.array([7]))
         # < figure out how to tie in the observation space.
         # > there are 8 possible states, so make it discrete(8)
+        # >> ran into issues, changing it to a box space with a low of zero 
+        # and a high of 7
         #000 ; 0 -> all sensors clear
         #001 ; 1 -> left sensor activated
         #010 ; 2 -> right sensor activated
@@ -138,6 +140,7 @@ class cwaggle_gym(gym.Env):
         self.controlLine = cb.PybindControl()
         self.state = 0
         self.simulation_length = 1000
+        return self.state
 
 def buildModel(states, actions):
     model = Sequential()
@@ -148,8 +151,8 @@ def buildModel(states, actions):
 
 def buildAgent(model, actions):
     policy = BoltzmannQPolicy()
-    memory = SequentialMemory(limit='50000', window_length=1)
-    dqn = DQNAgent(model=model, memory=memory, policy=policy, nb_action=actions, nb_steps_warmup=10, target_model_update=1e-2)
+    memory = SequentialMemory(limit=50000, window_length=1)
+    dqn = DQNAgent(model=model, memory=memory, policy=policy, nb_actions=actions, nb_steps_warmup=20, target_model_update=1e-2)
     return dqn
 
 # a quick test to make sure that the gym environment runs as it should
@@ -175,17 +178,33 @@ def playTest():
 def modelTest():
     env = cwaggle_gym()
     #states = env.observation_space
-    states = (1,)
+    states = env.observation_space.shape
     actions = env.action_space.n
     #print(states)
     model = buildModel(states, actions)
     model.summary()
 
-
+def agentTest():
+    print("Agent test start")
+    env = cwaggle_gym()
+    print("Environment created")
+    states = (1,)
+    actions = env.action_space.n
+    print("States and Actions recorded")
+    print("Number of actions is {}".format(actions))
+    model = buildModel(states, actions)
+    print("Model created")
+    dqn = buildAgent(model, actions)
+    print("Agent created")
+    dqn.compile(Adam(learning_rate=1e-3), metrics=['mae'])
+    print("Agent compiled, training begins")
+    dqn.fit(env, nb_steps=50000, visualize=False, verbose=1)
+    print("Agent testing complete")
 
 def main():
-    playTest() 
+    #playTest() 
     #modelTest()
+    agentTest()
     print("Main done")
 
 
